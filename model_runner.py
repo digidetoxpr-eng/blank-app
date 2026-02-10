@@ -15,6 +15,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
 
+from 2025aa05488-LRModels import preProcess
+
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -73,92 +75,11 @@ def train_and_evaluate(
 ):
     if target_col not in df.columns:
         raise ValueError("Target column not found in dataframe.")
-
+    df = preProcess(df)
+    
     X = df.drop(columns=[target_col])
     y = df[target_col]
 
-    # Basic split (stratify when reasonable)
-    stratify = y if y.nunique(dropna=True) > 1 else None
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=stratify
-    )
-
-    numeric_cols = X.select_dtypes(include=[np.number]).columns.tolist()
-    categorical_cols = [c for c in X.columns if c not in numeric_cols]
-
-    numeric_pipe = Pipeline(
-        steps=[
-            ("imputer", SimpleImputer(strategy="median")),
-            ("scaler", StandardScaler()),
-        ]
-    )
-
-    categorical_pipe = Pipeline(
-        steps=[
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("onehot", OneHotEncoder(handle_unknown="ignore")),
-        ]
-    )
-
-    pre = ColumnTransformer(
-        transformers=[
-            ("num", numeric_pipe, numeric_cols),
-            ("cat", categorical_pipe, categorical_cols),
-        ],
-        remainder="drop",
-    )
 
     model = _build_model(model_name, nb_variant=nb_variant)
-
-    # MultinomialNB expects non-negative features; OneHot is OK, but StandardScaler can create negatives.
-    # So if MultinomialNB is chosen, skip scaling for numeric features and just impute.
-    notes = ""
-    if isinstance(model, MultinomialNB):
-        pre = ColumnTransformer(
-            transformers=[
-                ("num", Pipeline([("imputer", SimpleImputer(strategy="median"))]), numeric_cols),
-                ("cat", categorical_pipe, categorical_cols),
-            ],
-            remainder="drop",
-        )
-        notes = "Note: MultinomialNB uses non-negative features; numeric scaling disabled."
-
-    clf = Pipeline(steps=[("pre", pre), ("model", model)])
-
-    clf.fit(X_train, y_train)
-    y_pred = clf.predict(X_test)
-
-    # Probabilities for ROC AUC when available
-    y_proba = None
-    if hasattr(clf[-1], "predict_proba"):
-        try:
-            y_proba = clf.predict_proba(X_test)
-        except Exception:
-            y_proba = None
-
-    average = "binary" if pd.Series(y_test).nunique() == 2 else "macro"
-    metrics = {
-        "accuracy": accuracy_score(y_test, y_pred),
-        "precision": precision_score(y_test, y_pred, average=average, zero_division=0),
-        "recall": recall_score(y_test, y_pred, average=average, zero_division=0),
-        "f1": f1_score(y_test, y_pred, average=average, zero_division=0),
-    }
-
-    # ROC AUC (binary or multiclass) if we have probabilities
-    if y_proba is not None:
-        try:
-            if pd.Series(y_test).nunique() == 2:
-                # positive class probability is column 1 by convention
-                metrics["roc_auc"] = roc_auc_score(y_test, y_proba[:, 1])
-            else:
-                metrics["roc_auc_ovr_macro"] = roc_auc_score(
-                    y_test, y_proba, multi_class="ovr", average="macro"
-                )
-        except Exception:
-            pass
-
-    metrics_df = pd.DataFrame(
-        [{"metric": k, "value": float(v)} for k, v in metrics.items()]
-    )
-
     return metrics_df, notes
