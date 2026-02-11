@@ -81,5 +81,5 @@ if should_run:
     metrics_df = pd.DataFrame.from_dict(metrics_dict, orient='index', columns=['Value'])
 
     # Display
-    metrics_placeholder.dataframe(metrics_df, use_container_width=True)
+    metrics_placeholder.dataframe(metrics_df, width='stretch')
 
