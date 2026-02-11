@@ -15,8 +15,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
 
-from lr_models import preProcess,loadModel,getLogisticRegressionModel,getKNearestNeighbour,getGaussianNB,getRandomForest,printRegressionMetrics
-getDecisionTreeClassifier
+from lr_models import preProcess,loadModel,getLogisticRegressionModel,getKNearestNeighbour,getGaussianNB,getRandomForest,printRegressionMetrics,getDecisionTreeClassifier
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
