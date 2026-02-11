@@ -80,7 +80,7 @@ def train_and_evaluate(
     
     model = _build_model(model_name, nb_variant=nb_variant)
     y_pred = model.predict(x)
-    print(printRegressionMetrics(y, y_pred, model_name))
+    metrics_df=printRegressionMetrics(y, y_pred, model_name)
 
     
     return metrics_df
