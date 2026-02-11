@@ -67,7 +67,7 @@ if should_run:
     st.session_state["trigger_eval"] = False
 
     with st.spinner("Training and evaluating..."):
-        metrics_df, notes = train_and_evaluate(
+        metrics_df= train_and_evaluate(
             model_name=model_choice,
             df=df,
             target_col=target_col,
@@ -77,5 +77,4 @@ if should_run:
     st.subheader("Metrics")
     metrics_placeholder.dataframe(metrics_df, use_container_width=True)
 
-    if notes:
-        st.caption(notes)
+
