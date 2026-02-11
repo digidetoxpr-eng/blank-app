@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 
@@ -67,7 +68,7 @@ if should_run:
     st.session_state["trigger_eval"] = False
 
     with st.spinner("Training and evaluating..."):
-        metrics_df= train_and_evaluate(
+        metrics_dict= train_and_evaluate(
             model_name=model_choice,
             df=df,
             target_col=target_col,
@@ -75,6 +76,10 @@ if should_run:
         )
 
     st.subheader("Metrics")
-    metrics_placeholder.dataframe(metrics_df, use_container_width=True)
+    #metrics_placeholder.dataframe(metrics_df, use_container_width=True)
+    # Convert to DataFrame (orient='index' makes keys the rows)
+    metrics_df = pd.DataFrame.from_dict(metrics_dict, orient='index', columns=['Value'])
 
+    # Display
+    metrics_placeholder.dataframe(metrics_df, use_container_width=True)
 
