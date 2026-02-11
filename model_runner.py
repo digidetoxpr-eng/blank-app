@@ -30,21 +30,19 @@ def _build_model(model_name: str, nb_variant: str | None = None):
     name = model_name.strip().lower()
 
     if name == "logistic regression" or name == "logistic regression".lower() or "logistic regression" in name:
-        return LogisticRegression(max_iter=2000)
+        return loadModel("LogisticRegression.sav")
 
     if "decision tree" in name:
-        return DecisionTreeClassifier(random_state=42)
+        return loadModel("DecisionTree.sav")
 
     if "k-nearest" in name or "k-nearest neighbor" in name or "knn" in name:
-        return KNeighborsClassifier()
+        return loadModel("KNN.sav")
 
     if "naive bayes" in name:
-        if (nb_variant or "").lower() == "multinomial":
-            return MultinomialNB()
-        return GaussianNB()
+        return loadModel("Gaussian.sav")
 
     if "random forest" in name:
-        return RandomForestClassifier(n_estimators=300, random_state=42, n_jobs=-1)
+        return loadModel("RandomForest.sav")
 
     if "xgboost" in name:
         try:
@@ -73,13 +71,17 @@ def train_and_evaluate(
     target_col: str,
     nb_variant: str | None = None,
 ):
+    metrics_df={}
     if target_col not in df.columns:
         raise ValueError("Target column not found in dataframe.")
     df = preProcess(df)
     
-    X = df.drop(columns=[target_col])
+    x = df.drop(columns=[target_col])
     y = df[target_col]
-
-
+    
     model = _build_model(model_name, nb_variant=nb_variant)
-    return metrics_df, notes
+    y_pred = model.predict(x)
+    print(printRegressionMetrics(y, y_pred, model_name))
+
+    
+    return metrics_df
