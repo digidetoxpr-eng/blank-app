@@ -74,7 +74,7 @@ if should_run:
             target_col=target_col,
             nb_variant=st.session_state.get("nb_variant"),
         )
-
+    print(metrics_dict)
     st.subheader("Metrics")
     #metrics_placeholder.dataframe(metrics_df, use_container_width=True)
     # Convert to DataFrame (orient='index' makes keys the rows)
