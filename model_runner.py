@@ -70,17 +70,23 @@ def train_and_evaluate(
     target_col: str,
     nb_variant: str | None = None,
 ):
+    print("1.0")
     metrics_dict={}
     if target_col not in df.columns:
         raise ValueError("Target column not found in dataframe.")
     df = preProcess(df)
-    
+    print("1.1")
     x = df.drop(columns=[target_col])
+    print("1.2")
     y = df[target_col]
+    print("1.3")
     
     model = _build_model(model_name, nb_variant=nb_variant)
+    print("1.4")
     y_pred = model.predict(x)
+    print("1.5")
     metrics_dict=printRegressionMetrics(y, y_pred, model_name)
     print(metrics_dict)
-    
+    print("1.6")
+    #df['Value'] = df['Value'].astype(str)
     return metrics_dict
