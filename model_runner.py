@@ -46,6 +46,7 @@ def _build_model(model_name: str, nb_variant: str | None = None):
     if "xgboost" in name:
         try:
             from xgboost import XGBClassifier
+            return loadModel("xgboost.sav")
         except Exception as e:
             raise RuntimeError(
                 "XGBoost is not available. Install 'xgboost' to use this option."
