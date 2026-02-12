@@ -32,7 +32,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_score, recall_score, f1_score, matthews_corrcoef
 
 # Ensemble Model - XGBoost (optional)
-# from xgboost import XGBRFClassifier
+from xgboost import XGBRFClassifier
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -176,10 +176,10 @@ def getRandomForest(x_train, y_train):
     return model
 
 # XGBoost placeholder (commented out)
-# def getXGBoost(x_train, y_train):
-#     model = XGBRFClassifier(n_estimators=100, subsample=0.9, colsample_bynode=0.2, random_state=42)
-#     model.fit(x_train, y_train)
-#     return model
+def getXGBoost(x_train, y_train):
+    model = XGBRFClassifier(n_estimators=100, subsample=0.9, colsample_bynode=0.2, random_state=42)
+    model.fit(x_train, y_train)
+    return model
 
 
 def printRegressionMetrics(y_test, y_pred, modelName):
