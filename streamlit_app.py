@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 from model_runner import train_and_evaluate
-csv_url = "https://github.com/digidetoxpr-eng/blank-app/blob/622a1795e77abe5c4641d4efc41050053f1b9ff4/requirements.txt"
+csv_url = "https://raw.githubusercontent.com/digidetoxpr-eng/blank-app/refs/heads/main/Airline_customer_satisfaction.csv"
 
 st.markdown(f"[Download CSV file -Test Data]({csv_url})")
 
