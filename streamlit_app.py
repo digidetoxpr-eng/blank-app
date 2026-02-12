@@ -3,7 +3,9 @@ import streamlit as st
 import pandas as pd
 
 from model_runner import train_and_evaluate
+csv_url = "https://github.com/digidetoxpr-eng/blank-app/blob/622a1795e77abe5c4641d4efc41050053f1b9ff4/requirements.txt"
 
+st.markdown(f"[Download CSV file -Test Data]({csv_url})")
 
 st.set_page_config(page_title="Logistic Regression explorer", layout="wide")
 
