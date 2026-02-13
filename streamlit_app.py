@@ -39,14 +39,7 @@ with col1:
     )
 
     nb_variant = None
-    if model_choice == "Naive Bayes Classifier - Gaussian or Multinomial":
-        nb_variant = st.radio(
-            "Naive Bayes type",
-            ["Gaussian", "Multinomial"],
-            horizontal=True,
-            key="nb_variant",
-            on_change=_on_model_change,
-        )
+   
 
 with col2:
     metrics_placeholder = st.empty()
@@ -77,11 +70,13 @@ if should_run:
             nb_variant=st.session_state.get("nb_variant"),
         )
     print(metrics_dict)
-    st.subheader("Metrics")
+    st.subheader("Confusion Matrix")
+    confusionmatrix_placeholder = st.empty()
+    
     #metrics_placeholder.dataframe(metrics_df, use_container_width=True)
     # Convert to DataFrame (orient='index' makes keys the rows)
     metrics_df = pd.DataFrame.from_dict(metrics_dict, orient='index', columns=['Value'])
 
     # Display
     metrics_placeholder.dataframe(metrics_df, width='stretch')
-
+    confusionmatrix_placeholder.dataframe( {"name": "Alice", "age": 30}, width='stretch')
