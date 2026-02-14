@@ -15,7 +15,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
 
-from lr_models import preProcess,loadModel,getLogisticRegressionModel,getKNearestNeighbour,getGaussianNB,getRandomForest,printRegressionMetrics,getDecisionTreeClassifier
+from lr_models import preProcess,printConfusionMatrix,loadModel,getLogisticRegressionModel,getKNearestNeighbour,getGaussianNB,getRandomForest,printRegressionMetrics,getDecisionTreeClassifier
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -73,6 +73,7 @@ def train_and_evaluate(
 ):
     print("1.0")
     metrics_dict={}
+    confusion_matrix={}
     if target_col not in df.columns:
         raise ValueError("Target column not found in dataframe.")
     df = preProcess(df)
@@ -90,4 +91,5 @@ def train_and_evaluate(
     print(metrics_dict)
     print("1.6")
     #df['Value'] = df['Value'].astype(str)
-    return metrics_dict
+    confusion_matrix=printConfusionMatrix(y_pred,y)
+    return metrics_dict,confusion_matrix
