@@ -63,7 +63,7 @@ if should_run:
     st.session_state["trigger_eval"] = False
 
     with st.spinner("Training and evaluating..."):
-        metrics_dict= train_and_evaluate(
+        metrics_dict,cm= train_and_evaluate(
             model_name=model_choice,
             df=df,
             target_col=target_col,
@@ -79,4 +79,4 @@ if should_run:
 
     # Display
     metrics_placeholder.dataframe(metrics_df, width='stretch')
-    confusionmatrix_placeholder.dataframe( {"name": "Alice", "age": 30}, width='stretch')
+    confusionmatrix_placeholder.dataframe(cm, width='stretch')
