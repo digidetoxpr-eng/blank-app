@@ -50,7 +50,7 @@ if uploaded is None:
 
 df = pd.read_csv(uploaded)
 st.subheader("Preview")
-st.dataframe(df.head(25), use_container_width=True)
+st.dataframe(df.head(5), use_container_width=True)
 
 # Minimal, necessary extra control: choose target column
 target_col = st.selectbox("Select target column", list(df.columns), key="target_col")
