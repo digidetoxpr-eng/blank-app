@@ -7,7 +7,7 @@ csv_url = "https://raw.githubusercontent.com/digidetoxpr-eng/blank-app/refs/head
 
 st.markdown(f"[Download CSV file -Test Data]({csv_url})")
 
-st.set_page_config(page_title="Logistic Regression explorer", layout="wide")
+st.set_page_config(page_title="Binary Classification Problem", layout="wide")
 
 st.title("Logistic Regression explorer")
 
